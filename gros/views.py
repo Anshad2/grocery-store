@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from django.views.generic import View,DetailView
+from django.views.generic import View,DetailView,TemplateView
 from gros.forms import RegistrationForm,LoginForm
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
@@ -48,7 +48,7 @@ class SignInView(View):
           user_object=authenticate(request,username=u_name,password=pwd)
           if user_object:
             login(request,user_object)
-            return redirect("index")
+            return redirect("home")
        messages.error(request,"invalid credentails")
        return render(request,"login.html",{"form":form})
 
@@ -60,18 +60,22 @@ class IndexView(View):
      return render(request,"index.html",{"data":qs})
 
 
-class ProductDetailView(View):
-   
-   def get(self,request,*args,**kwargs):
-      id=kwargs.get("pk")
-      qs=Product.objects.get(id=id)
-      return render(request,"product_detail.html",{"data":qs})
 
-#    template_name="product_detail.html"
-#    model=Product
-#    context_object_name="data"
+# url:localhost:8000/products/{id}
+    
+class ProductDetailView(DetailView):
+   
+#    def get(self,request,*args,**kwargs):
+#       id=kwargs.get("pk")
+#       qs=Product.objects.get(id=id)
+#       return render(request,"product_detail.html",{"data":qs})
+   template_name="product_detail.html"
+   model=Product
+   context_object_name="data"
    
    
 
-
+class HomeView(TemplateView):
+   template_name="frontpage.html"
+   
 
