@@ -6,6 +6,7 @@
     <title>Document</title>
 </head>
 <body>
+    {{form.errors}}
     <form action="" method="post">
         {%csrf_token%}
         {{form.as_p}}

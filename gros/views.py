@@ -1,11 +1,11 @@
 from django.shortcuts import render,redirect
-from django.views.generic import View,DetailView,TemplateView
+from django.views.generic import View,DetailView,TemplateView,ListView
 from gros.forms import RegistrationForm,LoginForm
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 
 
-from gros .models import Product
+from gros .models import Product,BasketItem
 
 # Create your views here.
 
@@ -18,7 +18,7 @@ class SignUpView(View):
 
 
     def get(self,request,*args,**kwargs):
-        form=RegistrationForm
+        form=RegistrationForm()
         return render(request,"register.html",{"form":form})
     
     def post(self,request,*args,**kwargs):
@@ -27,7 +27,7 @@ class SignUpView(View):
             form.save()
             return redirect("signin")
         else:
-          return render(request,"login.html",{"form":form})
+          return render(request,"register.html",{"form":form})
         
 
 # url:localhost:8000/
@@ -79,3 +79,47 @@ class HomeView(TemplateView):
    template_name="frontpage.html"
    
 
+# add to basket/cart
+# url:localhost:8000/product/{id}/add to basket
+# method:post
+   
+class AddToBasketView(View):
+   
+
+   def post(self,request,*args,**kwargs):
+      qty=request.POST.get("qty")
+      id=kwargs.get("pk")
+      product_obj=Product.objects.get(id=id)
+      BasketItem.objects.create(
+         qty=qty,
+         product_object=product_obj,
+         basket_object=request.user.cart
+      )
+      return redirect("product-detail")
+   
+
+
+# basket item list view
+# url:localhost:8000/basketitems/all
+# method get
+   
+class BasketItemListView(ListView):
+   
+                     
+   template_name="cart_list.html"
+   model=BasketItem
+   context_object_name="data"
+
+   def get_queryset(self):
+      qs=self.request.user.cart.cartitem.filter(is_order_placed=False)
+      return qs
+   
+
+
+class BasketItemRemoveView(View):
+   
+   def get(self,request,*args,**kwargs):
+      id=kwargs.get("pk")
+      basket_item_object=BasketItem.objects.get(id=id)
+      basket_item_object.delete()
+      return redirect ("basket-items")

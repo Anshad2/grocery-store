@@ -135,17 +135,18 @@ body{
       <header>Signup</header>
       <form action="{%url 'signup'%}" method="post">
         {%csrf_token%}
-        <input type="text" placeholder="Enter your username">
+        <input type="text" placeholder="Enter your username" name="username">
         <input type="email" placeholder="Enter your email" name="email">
         <input type="password" placeholder="Create a password" name="password1">
         <input type="password" placeholder="Confirm your password" name="password2">
         <input type="submit" class="button" value="Signup">
-      </form>
-      <div class="signup">
+        <div class="signup">
         <span class="signup">Already have an account?
          <label for="check">Login</label>
         </span>
       </div>
+      </form>
+      
     </div>
   </div>
   

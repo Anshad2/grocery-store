@@ -13,6 +13,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <link rel="stylesheet" href="{%static 'css/style.css'%}">
+    <!-- <link rel="stylesheet" href="{%static 'css/styles.css'%}"> -->
+
+    {%block link_block%}
+
+    {%endblock%}
+    
+    {%block style%}
+
+    {%endblock%}
+
 
 </head>
 <body>
@@ -23,15 +33,21 @@
 
         <nav class="navbar">
             <h3>
-                <a href="#home">home</a>
-                <a href="#product">Product</a>
-                <a href="#about">about</a>
-                <a href="#review">review</a>
-                <a href="#blog">blog</a>
+                <a href="{%url 'home'%}">home</a>
+                <a href="{%url 'index'%}">Product</a>
+                <a href="{%url 'home'%}">about</a>
+                <a href="{%url 'home'%}">review</a>
+                <a href="{%url 'home'%}">blog</a>
                 <a href="#contact">contact</a>
+                <a href="#contact">Logout</a>
+                 
+                
             </h3>
         </nav>
-
+        
+        
+        
+  
         <div class="icons">
             <div id="cart-btn" class="fas fa-shopping-basket"></div>
             <div id="login-btn" class="fas fa-user"></div>
@@ -55,30 +71,17 @@
                 <input type="checkbox" name="" id="remember-me">
                 <label for="remember-me">remember me</label>
             </div>
-            <a href="#" class="btn"> login </a>
-
-            
+            <a href="#" class="btn"> login </a>  
 
         </form>
+
     
 
     </header>
 
     
     
-    <div><form action="" class="search-box">
-
-        <!--icon------>
-        <i class="fas fa-search"></i>
-
-        <!--input----->
-        <input type="text" class="search-input" placeholder="Search" name="search" size = "80px" required>
-
-        <!--btn------->
-        <input type="submit" class="search-btn" value="Search">
-
-    </form></div>
-    <h1 class="heading"> our <span>products</span></h1>
+    
 
     <!-- end -->
 
@@ -97,6 +100,7 @@
     <!-- end -->
 
     <!-- product -->
+    
     
     {%block main_block%}
 
