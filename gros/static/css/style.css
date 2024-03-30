@@ -772,6 +772,29 @@ section{
   color: var(--secondary);
 }
 
+/* cart count */
+
+#cart {
+  position: relative;
+}
+
+#cart img {
+  width: 50px; /* adjust as needed */
+  height: auto; /* maintain aspect ratio */
+}
+
+#cart-count {
+  position: absolute;
+  top: -10px; /* adjust as needed */
+  right: -10px; /* adjust as needed */
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 5px;
+  font-size: 12px;
+}
+
+
 /* media queries */
 
 @media (max-width: 991px){

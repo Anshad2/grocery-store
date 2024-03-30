@@ -22,24 +22,24 @@ height: 100vh !important;
 
 {%block main_block%}
 
-<section class="h-100 h-custom " style="background-color: #eee;">
-    <div class="container  py-5 h-100 ">
-      <div class="row d-flex justify-content-center align-items-center h-100 ">
-        <div class="col">
-          <div class="card mt-5">
-            <div class="card-body p-4">
+
+<section class="h-100 h-custom ">
+    <div class="container  py-5 h-100 border-0 ">
+      <div class="row d-flex justify-content-center align-items-center h-100 border-0 ">
+        <div class="col border-0">
+          <div class="card mt-5 border-0">
+            <div class="card-body p-4 border-0">
   
-              <div class="row">
+              <div class="row border-0">
   
-                <div class="col-lg-7">
-                  <h3 class="mb-3"><a href="#!" class="text-body"><i
-                        class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping</a></h3>
+                <div class="col-lg-7 border-0">
+                  <h3 class="mb-3 border-0"><a href="{%url 'index'%}" class="text-body"><i
+                        class="fas fa-long-arrow-alt-left me-2 border-0"></i>Continue shopping</a></h3>
                   <hr>
   
-                  <div class="d-flex justify-content-between align-items-center mb-4">
+                  <div class="d-flex justify-content-between align-items-center mb-4 border-0">
                     <div>
                       <h3 class="mb-1">Shopping cart</h3>
-                      <p class="mb-0">Your Items In The cart</p>
                     </div>
                     
                         <!-- <div>
@@ -81,7 +81,27 @@ height: 100vh !important;
                         </div>
                         <div class="d-flex flex-row align-items-center">
                           <div>
-                            <h5><input type="number" value="{{bi.qty}}" min="1"/></h5>
+                            <!-- <h5><input type="number" value="{{bi.qty}}" min="1"/></h5> -->
+                            <div class="quantity py-2  me-5">
+                              <form action="{%url 'editcart=qty' bi.id%}" method="post">
+                                {%csrf_token%}
+                                {%if bi.qty > 1%}
+                                <button type="submit" class="quantity-left-minus py-2 btn btn-warning"
+                                 name="counterButton" 
+                                 value="-">-</button>
+
+                                {%endif%}
+                              <input class="mx-1 h-7 w-18 rounded-md border text-center "
+                               type="text" id="quantity" value="{{bi.qty}}"
+                               disabled
+                               />
+                               
+                              <button type="submit" class="quantity-right-plus py-2 btn btn-warning "
+                               name="counterButton" 
+                               value="+">+</button>
+                              </form>
+                              
+                          </div>
                             
                           </div>
                           <div style="width: 80px;">
@@ -96,69 +116,43 @@ height: 100vh !important;
                 <!-- end itreate -->
                 
                 </div>
-                <div class="col-lg-5">
-  
-                  <div class="card bg-primary text-white rounded-3">
+                <div class="col-lg-5 border-0">
+                  <div class="card mt-5 border-0 py-5">
+                    <h3 class="card-header border-0">Detials</h3>
+                    <div class="card-body border-0">
+                      <h3 class="card-title mt-5">Shipping Free</h3>
+                      <h3 class="card-text mt-5">Accept All Cards</h3>
+                      <div class="card bg-secondary text-white rounded-3">
                     <div class="card-body">
                       <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h5 class="mb-0">Card details</h5>
+                        <h5 class="mb-0"></h5>
                         
                       </div>
   
-                      <p class="small mb-2">Card type</p>
                       <a href="#!" type="submit" class="text-white"><i
-                          class="fab fa-cc-mastercard fa-2x me-2"></i></a>
+                          class="fab fa-cc-mastercard fa-2x me-2 "></i></a>
                       <a href="#!" type="submit" class="text-white"><i
                           class="fab fa-cc-visa fa-2x me-2"></i></a>
                       <a href="#!" type="submit" class="text-white"><i
                           class="fab fa-cc-amex fa-2x me-2"></i></a>
                       <a href="#!" type="submit" class="text-white"><i class="fab fa-cc-paypal fa-2x"></i></a>
   
-                      <form class="mt-4">
-                        <div class="form-outline form-white mb-4">
-                          <input type="text" id="typeName" class="form-control form-control-lg" siez="17"
-                            placeholder="Cardholder's Name" />
-                          <label class="form-label" for="typeName">Cardholder's Name</label>
-                        </div>
-  
-                        <div class="form-outline form-white mb-4">
-                          <input type="text" id="typeText" class="form-control form-control-lg" siez="17"
-                            placeholder="1234 5678 9012 3457" minlength="19" maxlength="19" />
-                          <label class="form-label" for="typeText">Card Number</label>
-                        </div>
-  
-                        <div class="row mb-4">
-                          <div class="col-md-6">
-                            <div class="form-outline form-white">
-                              <input type="text" id="typeExp" class="form-control form-control-lg"
-                                placeholder="MM/YYYY" size="7" id="exp" minlength="7" maxlength="7" />
-                              <label class="form-label" for="typeExp">Expiration</label>
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-outline form-white">
-                              <input type="password" id="typeText" class="form-control form-control-lg"
-                                placeholder="&#9679;&#9679;&#9679;" size="1" minlength="3" maxlength="3" />
-                              <label class="form-label" for="typeText">Cvv</label>
-                            </div>
-                          </div>
-                        </div>
-  
-                      </form>
-  
-                      <hr class="my-4">
+                      
 
-  
-  
+
+                    </div>
+                  </div>
+                      
+                      
                       <div class="d-flex justify-content-between mb-4">
-                        <h3 class="mb-2">Total (Incl. taxes)</h3>
-                        <h3 class="mb-2">{{request.user.cart.cart_total}}</h3>
+                        <h3 class="mb-2 mt-5">Total (Incl. taxes)</h3>
+                        <h3 class="mb-2 mt-5">{{request.user.cart.cart_total}}</h3>
                       </div>
   
-                      <button type="button" class="btn btn-info btn-block btn-lg">
+                      <button type="button" class="btn btn-info btn-block btn-lg mt-3">
                         <div class="d-flex justify-content-between">
                           <span></span>
-                          <span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
+                          <a href="{%url 'checkout'%}"><span> Proceed To Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span></a>
                         </div>
                       </button>
   
@@ -179,28 +173,26 @@ height: 100vh !important;
 {%endblock%}
 {%block script_block%}
 
-<!-- <script>
-  // JavaScript
-let quantity = 1; // Initial quantity
+<script>
+  $(document).ready(function() {
+      var quantity = 1; // Initial quantity
+      $('.quantity-right-plus').click(function(e) {
+          e.preventDefault();
+          quantity = parseInt($('#quantity').val());
+          $('#quantity').val(quantity + 1); // Increment
+      });
+      $('.quantity-left-minus').click(function(e) {
+          e.preventDefault();
+          quantity = parseInt($('#quantity').val());
+          if (quantity > 1) {
+              $('#quantity').val(quantity - 1); // Decrement
+          }
+      });
+  });
+</script>
 
-function increaseQuantity() {
-  quantity++;
-  updateQuantityDisplay();
-}
-
-function decreaseQuantity() {
-  if (quantity > 1) { // Ensure quantity doesn't go below 1
-    quantity--;
-    updateQuantityDisplay();
-  }
-}
-
-function updateQuantityDisplay() {
-  document.getElementById('quantityValue').innerText = quantity;
-}
-
-// You can then use the 'quantity' variable to update the quantity of items in your grocery app's logic.
-
-</script> -->
 
 {%endblock%}
+
+
+

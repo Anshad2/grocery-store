@@ -32,14 +32,17 @@
                 <a href="#review">review</a>
                 <a href="#blog">blog</a>
                 <a href="#contact">contact</a>
-                <a href="#home">Logout</a>
+                <a href="{%url 'signout'%}">Logout</a>
+
 
 
             </h3>
         </nav>
 
         <div class="icons">
-            <div id="cart-btn" class="fas fa-shopping-basket"></div>
+            <a href="{%url 'basket-items'%}"><div id="cart-btn" class="fas fa-shopping-basket">
+                <span id="cart-count ">{{cart_count}}</span>
+            </div></a>
             <div id="login-btn" class="fas fa-user"></div>
             <div id="menu-btn" class="fas fa-bars"></div>
         </div>
