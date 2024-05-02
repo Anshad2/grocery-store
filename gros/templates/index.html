@@ -37,6 +37,15 @@
             <span><i class="bx bx-chevron-down"></i></span>
           </form>
         </h2>
+        <div>
+            {%for cat in Catergories%}
+
+                <div>
+                    <a href="{%url 'index'%}?category={{cat.name}}">{{cat.name}}</a>
+                </div>
+
+            {%endfor%}
+        </div>
     
     
 

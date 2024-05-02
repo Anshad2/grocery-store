@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transaction Success</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        margin-top: 100px;
+    }
+    .success-message {
+        background-color: #4CAF50;
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        display: inline-block;
+    }
+    .button {
+        background-color: #008CBA;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="success-message">
+        <h1>Transaction Successful!</h1>
+        <p>Your payment has been successfully processed.</p>
+        <p>Thank you for your purchase.</p>
+        <a href="{%url 'home'%}" class="button">Home</a>
+        <a href="{%url 'order-summary'%}" class="button">Summary</a>
+    </div>
+</div>
+</body>
+</html>

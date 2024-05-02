@@ -4,11 +4,18 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_exempt
 
 
 from gros.forms import RegistrationForm,LoginForm
-from gros .models import Product,BasketItem,Order,OrderItems
+from gros .models import Product,BasketItem,Order,OrderItems,Category
 from gros.decorators import signin_required,owner_permission_required
+
+import razorpay
+
+
+
+
 # Create your views here.
 
    
@@ -17,17 +24,29 @@ from gros.decorators import signin_required,owner_permission_required
 # form_class :registartionform
 
 
+KEY_ID = "rzp_test_SG619lRSq7QuGj"
+
+KEY_SECRET= "hdBtL2AsTh3rHrY97ymARlar"
+
+
+
 class SignUpView(View):
 
 
     def get(self,request,*args,**kwargs):
+        
         form=RegistrationForm()
+
         return render(request,"register.html",{"form":form})
     
     def post(self,request,*args,**kwargs):
+        
         form=RegistrationForm(request.POST)
+
         if form.is_valid():
+            
             form.save()
+            
             return redirect("signin")
         else:
           return render(request,"register.html",{"form":form})
@@ -60,7 +79,8 @@ class SignInView(View):
 class IndexView(View):
     def get(self,request,*args,**kwargs):
      qs=Product.objects.all()
-     return render(request,"index.html",{"data":qs})
+     categories = Category.objects.all()
+     return render(request,"index.html",{"data":qs,"categories":categories})
 
 
 
@@ -160,6 +180,7 @@ class CheckOutView(View):
       email=request.POST.get("email")
       phone=request.POST.get("phone")
       address=request.POST.get("address")
+      payment_method = request.POST.get("payment")
 
       # creating order instance
       order_obj=Order.objects.create(
@@ -167,7 +188,8 @@ class CheckOutView(View):
          delivery_address=address,
          phone=phone,
          email=email,
-         total=request.user.cart.cart_total
+         total=request.user.cart.cart_total,
+         payment=payment_method
      )
        # creating ordertitems instance
    
@@ -180,8 +202,9 @@ class CheckOutView(View):
             basket_item_object=bi
 
          )
-         bi.is_order_placed=True
-         bi.save()
+            bi.is_order_placed=True
+            
+            bi.save()
 
       except:
         
@@ -189,7 +212,56 @@ class CheckOutView(View):
       
       finally:
         
-        return redirect("index")
+         if payment_method == "online" and order_obj:
+           
+           client = razorpay.Client(auth=(KEY_ID,KEY_SECRET))
+
+           data = {"amount":int(order_obj.get_order_total*100), "currency": "INR", "receipt": "order_rcptid_11" }
+
+           payment = client.order.create(data=data)
+
+           order_obj.order_id=payment.get("id")
+           order_obj.save()
+
+           context = {
+                        "key":KEY_ID,
+                        "order_id":payment.get("id"),
+                        "amount":int(payment.get("amount"))
+                     }
+
+           return render(request,"payment.html",{"context":context})
+
+                     
+
+         return redirect("index")
+
+
+      
+
+@method_decorator(csrf_exempt,name="dispatch") 
+class PaymentVerificationView(View):
+
+   def post(self,request,*args,**kwargs):
+
+      client = razorpay.Client(auth=(KEY_ID,KEY_SECRET))
+
+      data = request.POST
+
+      try:
+
+         client.utility.verify_payment_signature(data)
+         order_obj =Order.objects.get(order_id=data.get("razorpay_order_id"))
+         order_obj.is_paid=True
+         order_obj.save()
+
+         print("transaction compleeted ")
+
+      except:
+
+         print("transaction failed")
+
+
+      return render(request,"success.html")
       
 
 
@@ -197,13 +269,36 @@ class OrderSummaryView(View):
 
 
    def get(self,request,*args,**kwargs):
+
       qs=Order.objects.filter(user_object=request.user).exclude(status="cancelled")
+
       return render(request,"summary.html",{"data":qs})
    
 
-@method_decorator([signin_required,never_cache],name="dispatch")  
+# localhost:8000/order/items{id}/remove
+   
+class OrderItemRemoveView(View):
+
+
+   def get(self,request,*args,**kwargs):
+
+      id=kwargs.get("pk")
+
+      OrderItems.objects.get(id=id).delete()
+
+      return redirect("order-summary")
+   
+
+
+
+@method_decorator([signin_required,never_cache],name="dispatch")
+
 class SignOutView(View):
 
    def get(self,request,*args,**kwargs):
+
       logout(request)
+
       return redirect("signin")
+   
+

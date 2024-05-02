@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Grocery store website</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
@@ -35,11 +35,9 @@
                           <p class="text-sm font-bold text-gray-900">
                             {{oi.basket_item_object.product_object.title}}
                           </p>
-                          <p class="mt-1.5 text-sm font-medium text-gray-600">
-                            Size:{{oi.basket_item_object.size_object}}
-                          </p>
+                          
                         </div>
-                        <p class="mt-4 text-sm font-medium text-gray-500">x {{oi.basket_item_object.qty}}</p>
+                        <p class="mt-4 text-sm font-medium text-gray-500">qty : {{oi.basket_item_object.qty}}</p>
                       </div>
                     </div>
                     <div class="ml-auto flex flex-col items-end justify-between">
